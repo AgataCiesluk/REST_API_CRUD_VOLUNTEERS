@@ -1,0 +1,11 @@
+# App Framework
+Flask==2.3.2
+
+# Flask Packages
+Flask-SQLAlchemy==3.0.3
+
+# Database
+psycopg2==2.9.6
+
+# ENV Variables
+python-dotenv==1.0.0
