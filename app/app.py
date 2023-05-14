@@ -5,7 +5,7 @@ app = flask.Flask(__name__)
 
 @app.route('/')
 def index():
-    sample_dict = {'message': 'Hello, this is my app!', 'author': 'Agata'}
+    sample_dict = {'message': 'Hello, this is my app!', 'author': 'Agata Ciesluk'}
     return sample_dict
 
 
