@@ -2,14 +2,10 @@
  as well as methods needed to create volunteers table with exemplary data.
 
  This module doesn't have to be used if db_volunteer already exist and contains volunteer table with exemplary rows."""
-import logging
 
 from dotenv import dotenv_values
 
-from app.database.db_config import DB_CONNECTION_ARGS
-from app.database.db_handler import create_connection, execute_query, insert_data_into_volunteers_table
-
-config = dotenv_values("../../env/.env")
+config = dotenv_values("../.env")
 
 
 #### Create DB db_volunteers if not exist ####
@@ -37,7 +33,7 @@ config = dotenv_values("../../env/.env")
 
 
 ### Create volunteers table in DB db_volunteers if this table doesn't exist ###
-conn_volunteers = create_connection(*DB_CONNECTION_ARGS)
+# conn_volunteers = create_connection(*DB_CONNECTION_ARGS)
 # create_volunteers_table_query = """
 # CREATE TABLE IF NOT EXISTS volunteers (
 #   volunteer_id SERIAL PRIMARY KEY,

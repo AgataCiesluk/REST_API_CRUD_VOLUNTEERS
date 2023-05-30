@@ -1,6 +1,6 @@
 from dotenv import dotenv_values
 
-config = dotenv_values("../../env/.env")
+config = dotenv_values()
 DB_CONNECTION_ARGS = [
     config.get("DB_NAME"),
     config.get("DB_USER"),

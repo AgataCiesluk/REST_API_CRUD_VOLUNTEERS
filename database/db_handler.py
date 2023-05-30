@@ -4,9 +4,9 @@ import psycopg2
 from psycopg2 import OperationalError
 from dotenv import dotenv_values
 
-from app.database.db_config import DB_CONNECTION_ARGS
+from database.db_config import DB_CONNECTION_ARGS
 
-config = dotenv_values("../../env/.env")
+config = dotenv_values("../.env")
 
 
 def create_connection(db_name, db_user, db_password, db_host, db_port):
@@ -62,7 +62,7 @@ def get_all_volunteers(connection):
     all_volunteers = execute_query(connection, "SELECT * FROM volunteers")
     return all_volunteers
 
-
+# print(get_all_volunteers(create_connection(DB_CONNECTION_ARGS)))
 # dodac funkcje get_all_staff_members() i pozniej w controllerze endpoint na to.
 # Funkcja niech wyrzuca bledy np. raise valueError kiedy tabela jest pusta lub nie istnieje lub gdy nie udalo sie polaczenie z baza danych.
 # Chociaz polaczenie z baza danych juz jest sprawdzane w create connection try/except.
