@@ -62,7 +62,20 @@ def get_all_volunteers(connection):
     all_volunteers = execute_query(connection, "SELECT * FROM volunteers")
     return all_volunteers
 
-# print(get_all_volunteers(create_connection(DB_CONNECTION_ARGS)))
+
+def get_volunteer_by(param_name, param_value, connection):
+    query = f"SELECT * FROM volunteers WHERE {param_name}={param_value}"
+    volunteers_by_param = execute_query(connection, query)
+    return volunteers_by_param
+
+
+def get_volunteer_by_id(id: int, connection):
+    if not id:
+        raise ValueError("ID should not be empty.")
+    return get_volunteer_by("volunteer_id", id, connection)
+
+
+# print(get_all_volunteers(create_connection(*DB_CONNECTION_ARGS)))
 # dodac funkcje get_all_staff_members() i pozniej w controllerze endpoint na to.
 # Funkcja niech wyrzuca bledy np. raise valueError kiedy tabela jest pusta lub nie istnieje lub gdy nie udalo sie polaczenie z baza danych.
 # Chociaz polaczenie z baza danych juz jest sprawdzane w create connection try/except.
