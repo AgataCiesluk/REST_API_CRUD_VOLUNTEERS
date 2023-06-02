@@ -57,6 +57,9 @@ def insert_data_into_volunteers_table(data: list):
     logging.info(success_info)
     print(success_info)
 
+def add_volunteer(volunteer):
+    pass
+
 
 def get_all_volunteers(connection):
     all_volunteers = execute_query(connection, "SELECT * FROM volunteers")
