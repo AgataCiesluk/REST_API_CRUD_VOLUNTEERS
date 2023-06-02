@@ -50,7 +50,7 @@ def insert_data_into_volunteers_table(data: list):
     connection = create_connection(*DB_CONNECTION_ARGS)
     data_records = ", ".join(["%s"] * len(data))
     insert_query = (
-        f"INSERT INTO volunteers (first_name, last_name, phone_number) VALUES {data_records}"
+        f"INSERT INTO volunteers (first_name, last_name, phone_number) VALUES ({data_records})"
     )
     execute_query(connection, insert_query, data)
     success_info = f"Data inserted into volunteers table in DB db_volunteers."
@@ -69,10 +69,13 @@ def get_volunteer_by(param_name, param_value, connection):
     return volunteers_by_param
 
 
-def get_volunteer_by_id(id: int, connection):
-    if not id:
+def get_volunteer_by_id(volunteer_id: int, connection):
+    if not volunteer_id:
         raise ValueError("ID should not be empty.")
-    return get_volunteer_by("volunteer_id", id, connection)
+    volunteer_by_id = get_volunteer_by("volunteer_id", volunteer_id, connection)
+    if not volunteer_by_id:
+        return ValueError(f"Volunteer with ID={volunteer_id} doesn't exist.")
+    return volunteer_by_id
 
 
 # print(get_all_volunteers(create_connection(*DB_CONNECTION_ARGS)))
