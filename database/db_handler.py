@@ -57,8 +57,17 @@ def insert_data_into_volunteers_table(data: list):
     logging.info(success_info)
     print(success_info)
 
-def add_volunteer(volunteer):
-    pass
+
+def db_add_volunteer(volunteer, db_model):
+    db_model.session.add(volunteer)
+    db_model.session.commit()
+    return print(f'Volunteer {volunteer.first_name} {volunteer.last_name} added to DB')
+
+
+def db_delete_volunteer(volunteer, db_model):
+    db_model.session.delete(volunteer)
+    db_model.session.commit()
+    return print(f'Volunteer {volunteer.first_name} {volunteer.last_name} deleted from DB')
 
 
 def get_all_volunteers(connection):
