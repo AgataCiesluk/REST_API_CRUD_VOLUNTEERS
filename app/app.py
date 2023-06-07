@@ -1,10 +1,13 @@
+import json
+
 import flask
 from flask import request
 
 from models import db, Volunteer
 from database.db_config import DB_CONNECTION_ARGS, DB_CONNECTION_PARAMS
 from database.db_handler import create_connection, get_all_volunteers, insert_data_into_volunteers_table, \
-    db_add_volunteer, db_delete_volunteer
+    db_add_volunteer, db_delete_volunteer, get_volunteer_by_id
+from utils import sqlalchemy_model_to_dict, models_list_to_dict
 
 app = flask.Flask(__name__)
 # app.config['SQLALCHEMY_DATABASE_URI'] = f'postgresql://' \
@@ -21,16 +24,11 @@ app.config['SQLALCHEMY_DATABASE_URI'] = f'postgresql://' \
                                         f'{DB_CONNECTION_PARAMS.get("DB_NAME")}'
 db.init_app(app)
 
-@app.route('/')
-def index():
-    sample_dict = {'message': 'Hello, this is my app!', 'author': 'Agata Ciesluk'}
-    return sample_dict
-
 
 @app.route('/volunteers')
 def read_all_volunteers():
-    all_volunteers = get_all_volunteers(create_connection(**DB_CONNECTION_PARAMS))
-    return {'volunteers': all_volunteers}
+    volunteers_dict = models_list_to_dict(Volunteer.query.all())
+    return {'volunteers': volunteers_dict}
 
 @app.route('/volunteers', methods=['GET', 'POST'])
 def add_volunteer():
@@ -47,7 +45,7 @@ def add_volunteer():
 
 @app.route('/volunteers/delete/<int:id>')
 def delete_volunteer(id):
-    volunteer = Volunteer.query.filter_by(volunteer_id=id).one()
+    volunteer = get_volunteer_by_id(id)
     db_delete_volunteer(volunteer, db)
     return {'message': f'Volunteer {volunteer.first_name} {volunteer.last_name} deleted from DB'}
 

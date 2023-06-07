@@ -5,6 +5,7 @@ from psycopg2 import OperationalError
 from dotenv import dotenv_values
 
 from database.db_config import DB_CONNECTION_ARGS
+from models import Volunteer
 
 config = dotenv_values("../.env")
 
@@ -81,14 +82,17 @@ def get_volunteer_by(param_name, param_value, connection):
     return volunteers_by_param
 
 
-def get_volunteer_by_id(volunteer_id: int, connection):
-    if not volunteer_id:
-        raise ValueError("ID should not be empty.")
-    volunteer_by_id = get_volunteer_by("volunteer_id", volunteer_id, connection)
-    if not volunteer_by_id:
-        return ValueError(f"Volunteer with ID={volunteer_id} doesn't exist.")
-    return volunteer_by_id
+# def get_volunteer_by_id(volunteer_id: int, connection):
+#     if not volunteer_id:
+#         raise ValueError("ID should not be empty.")
+#     volunteer_by_id = get_volunteer_by("volunteer_id", volunteer_id, connection)
+#     if not volunteer_by_id:
+#         return ValueError(f"Volunteer with ID={volunteer_id} doesn't exist.")
+#     return volunteer_by_id
 
+def get_volunteer_by_id(volunteer_id: int):
+    volunteer = Volunteer.query.filter_by(volunteer_id=volunteer_id).one()
+    return volunteer
 
 # print(get_all_volunteers(create_connection(*DB_CONNECTION_ARGS)))
 # dodac funkcje get_all_staff_members() i pozniej w controllerze endpoint na to.
