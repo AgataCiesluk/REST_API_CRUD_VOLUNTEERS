@@ -1,13 +1,15 @@
 import json
 
 import flask
-from flask import request
+from flask import request, jsonify
+from sqlalchemy import exc
 
 from models import db, Volunteer
 from database.db_config import DB_CONNECTION_ARGS, DB_CONNECTION_PARAMS
 from database.db_handler import create_connection, get_all_volunteers, insert_data_into_volunteers_table, \
     db_add_volunteer, db_delete_volunteer, get_volunteer_by_id
 from utils import sqlalchemy_model_to_dict, models_list_to_dict
+from exceptions import NoRecordFound
 
 app = flask.Flask(__name__)
 # app.config['SQLALCHEMY_DATABASE_URI'] = f'postgresql://' \
@@ -43,9 +45,12 @@ def add_volunteer():
                           'phone_number': volunteer.phone_number}}
 
 
-@app.route('/volunteers/delete/<int:id>')
+@app.route('/volunteers/delete/<int:id>', methods=['DELETE'])
 def delete_volunteer(id):
-    volunteer = get_volunteer_by_id(id)
+    try:
+        volunteer = get_volunteer_by_id(id)
+    except NoRecordFound:
+        return jsonify({'error': f'Record with id={id} not found in DB'}), 404
     db_delete_volunteer(volunteer, db)
     return {'message': f'Volunteer {volunteer.first_name} {volunteer.last_name} deleted from DB'}
 

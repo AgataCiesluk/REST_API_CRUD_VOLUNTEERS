@@ -3,9 +3,11 @@ import logging
 import psycopg2
 from psycopg2 import OperationalError
 from dotenv import dotenv_values
+from sqlalchemy import exc
 
 from database.db_config import DB_CONNECTION_ARGS
 from models import Volunteer
+from exceptions import NoRecordFound
 
 config = dotenv_values("../.env")
 
@@ -91,10 +93,14 @@ def get_volunteer_by(param_name, param_value, connection):
 #     return volunteer_by_id
 
 def get_volunteer_by_id(volunteer_id: int):
-    volunteer = Volunteer.query.filter_by(volunteer_id=volunteer_id).one()
+    try:
+        volunteer = Volunteer.query.filter_by(volunteer_id=volunteer_id).one()
+    except exc.NoResultFound as e:
+        #     TO_DO: Logger with original error message logger.warning(e.message)
+        raise NoRecordFound
     return volunteer
 
-# print(get_all_volunteers(create_connection(*DB_CONNECTION_ARGS)))
+
 # dodac funkcje get_all_staff_members() i pozniej w controllerze endpoint na to.
 # Funkcja niech wyrzuca bledy np. raise valueError kiedy tabela jest pusta lub nie istnieje lub gdy nie udalo sie polaczenie z baza danych.
 # Chociaz polaczenie z baza danych juz jest sprawdzane w create connection try/except.

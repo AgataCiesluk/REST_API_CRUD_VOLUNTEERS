@@ -1,0 +1,2 @@
+class NoRecordFound(Exception):
+    pass
