@@ -67,10 +67,14 @@ def db_add_volunteer(volunteer, db_model):
     return print(f'Volunteer {volunteer.first_name} {volunteer.last_name} added to DB')
 
 
-def db_delete_volunteer(volunteer, db_model):
+def db_delete_volunteer(id, db_model):
+    try:
+        volunteer = get_volunteer_by_id(id)
+    except NoRecordFound:
+        raise
     db_model.session.delete(volunteer)
     db_model.session.commit()
-    return print(f'Volunteer {volunteer.first_name} {volunteer.last_name} deleted from DB')
+    return volunteer
 
 
 def get_all_volunteers(connection):
