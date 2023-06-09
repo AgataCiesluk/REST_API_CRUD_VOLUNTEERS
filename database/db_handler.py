@@ -8,6 +8,7 @@ from sqlalchemy import exc
 from database.db_config import DB_CONNECTION_ARGS
 from models import Volunteer
 from exceptions import NoRecordFound
+from utils import models_list_to_dict
 
 config = dotenv_values("../.env")
 
@@ -61,10 +62,11 @@ def insert_data_into_volunteers_table(data: list):
     print(success_info)
 
 
-def db_add_volunteer(volunteer, db_model):
+def db_add_volunteer(first_name, last_name, phone_number, db_model):
+    volunteer = Volunteer(first_name, last_name, phone_number)
     db_model.session.add(volunteer)
     db_model.session.commit()
-    return print(f'Volunteer {volunteer.first_name} {volunteer.last_name} added to DB')
+    return volunteer
 
 
 def db_delete_volunteer(id, db_model):
@@ -77,9 +79,9 @@ def db_delete_volunteer(id, db_model):
     return volunteer
 
 
-def get_all_volunteers(connection):
-    all_volunteers = execute_query(connection, "SELECT * FROM volunteers")
-    return all_volunteers
+def get_all_volunteers():
+    all_volunteers = Volunteer.query.all()
+    return models_list_to_dict(all_volunteers)
 
 
 def get_volunteer_by(param_name, param_value, connection):
