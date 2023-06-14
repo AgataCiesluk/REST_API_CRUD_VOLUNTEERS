@@ -78,6 +78,14 @@ def db_delete_volunteer(id, db_model):
     db_model.session.commit()
     return volunteer
 
+def db_update_volunteer(id, db_model, first_name=None, last_name=None, phone_number=None):
+    try:
+        volunteer = get_volunteer_by_id(id)
+    except NoRecordFound:
+        raise
+    db_model.session.flush()
+    db_model.session.commit()
+    return volunteer
 
 def get_all_volunteers():
     all_volunteers = Volunteer.query.all()
@@ -90,14 +98,6 @@ def get_volunteer_by(param_name, param_value, connection):
     return volunteers_by_param
 
 
-# def get_volunteer_by_id(volunteer_id: int, connection):
-#     if not volunteer_id:
-#         raise ValueError("ID should not be empty.")
-#     volunteer_by_id = get_volunteer_by("volunteer_id", volunteer_id, connection)
-#     if not volunteer_by_id:
-#         return ValueError(f"Volunteer with ID={volunteer_id} doesn't exist.")
-#     return volunteer_by_id
-
 def get_volunteer_by_id(volunteer_id: int):
     try:
         volunteer = Volunteer.query.filter_by(volunteer_id=volunteer_id).one()
@@ -106,8 +106,17 @@ def get_volunteer_by_id(volunteer_id: int):
         raise NoRecordFound
     return volunteer
 
-
-# dodac funkcje get_all_staff_members() i pozniej w controllerze endpoint na to.
+# new_volunteer_attributes = {'first_name': 'Mateuszek'}
+# volunteer = get_volunteer_by_id(12)
+# print(volunteer.first_name)
+# print(volunteer.last_name)
+# volunteer_dict = volunteer.__dict__
+# for attr_name, attr_value in new_volunteer_attributes.items():
+#     if attr_value:
+#         volunteer_dict[attr_name] = attr_value
+# volunteer = volunteer_dict
+# print(volunteer.first_name)
+# print(volunteer.last_name)
 # Funkcja niech wyrzuca bledy np. raise valueError kiedy tabela jest pusta lub nie istnieje lub gdy nie udalo sie polaczenie z baza danych.
 # Chociaz polaczenie z baza danych juz jest sprawdzane w create connection try/except.
 # Controller powinien przechwycic te bledy i przekazac klientowi numer bledu np. 405 wraz z trescia np. pusta baza danych etc.
