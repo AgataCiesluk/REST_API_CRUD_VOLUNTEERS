@@ -1,0 +1,3 @@
+[2023-06-16 19:14:26,942 - INFO] <module>() - this is INFO
+[2023-06-16 19:15:02,661 - INFO] <module>() - this is INFO
+[2023-06-16 19:16:35,156 - INFO] <module>() - this is INFO
