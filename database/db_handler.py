@@ -83,6 +83,12 @@ def db_update_volunteer(id, db_model, first_name=None, last_name=None, phone_num
         volunteer = get_volunteer_by_id(id)
     except NoRecordFound:
         raise
+    if first_name:  # TODO: methods to validate first_name
+        volunteer.first_name = first_name
+    if last_name:  # TODO: methods to validate last_name
+        volunteer.last_name = last_name
+    if phone_number:  # TODO: methods to validate phone_number
+        volunteer.phone_number = phone_number
     db_model.session.flush()
     db_model.session.commit()
     return volunteer
